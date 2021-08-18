@@ -39,7 +39,7 @@ jobs:
         if: github.event_name == 'push'
         run: npm run build
       - name: Upload coverage
-        uses: actions/upload-artifacts@v1
+        uses: actions/upload-artifact@v1
         with:
           path: build
           name: build
