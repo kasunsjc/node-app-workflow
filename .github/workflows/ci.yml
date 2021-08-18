@@ -30,7 +30,7 @@ jobs:
       - name: install surge
         run: npm install -g surge
       - name: Deploy to stage
-        if: $GITHUB_EVENT_NAME == "push"
+        if: github.event_name == 'push'
         run: npx surge --project ./build --domain lyrical-egg.surge.sh
         env:
           SURGE_LOGIN: ${{secrets.SURGE_LOGIN}}
