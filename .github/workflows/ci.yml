@@ -11,6 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: cache modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{runner.os}}-node-${{hashFiles('**/package-lock.json')}}
+          restore-keys: |
+            ${{runner.os}}-node-
       - name: Use Nodejs
         uses: actions/setup-node@v1
         with:
@@ -23,10 +30,20 @@ jobs:
         run: npm test -- --coverage
         env:
           CI: true
-      
+      - name: Upload coverage
+        uses: actions/upload-artifact@v1
+        with:
+          path: coverage
+          name: code-coverage
       - name: Build Project
         if: github.event_name == 'push'
         run: npm run build
+      - name: Upload coverage
+        uses: actions/upload-artifact@v1
+        if: github.event_name == 'push'
+        with:
+          path: build
+          name: build
       - name: install surge
         run: npm install -g surge
       - name: Deploy to stage
