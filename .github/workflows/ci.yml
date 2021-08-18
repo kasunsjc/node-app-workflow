@@ -40,6 +40,7 @@ jobs:
         run: npm run build
       - name: Upload coverage
         uses: actions/upload-artifact@v1
+        if: github.event_name == 'push'
         with:
           path: build
           name: build
